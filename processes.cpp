@@ -102,6 +102,12 @@ int main(int argc, char *argv[])
 
             //Do grep argv[1]
             cerr << "grep reached\n";
+            cerr << &"argv[1]: " [ *argv[1]];
+            cerr << "\n";
+            cerr << "cin: ";
+            std::string cont;
+            cin >> cont;
+            cerr << cont;
             execlp("grep", "grep", argv[1], (char *) NULL);
             cerr << "grep failed\n";
          }
