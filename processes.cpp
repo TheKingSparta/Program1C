@@ -123,12 +123,12 @@ int main(int argc, char *argv[])
          while(wait(NULL) != pid);
          //cerr << "wait completed\n";
 
-         //Read from pipe
-         dup2(fd[RD], RD);
-
          //Close pipe fd we don't need anymore
          close(fd[WR]);
          close(fd2[RD]);
+
+         //Read from pipe
+         dup2(fd[RD], RD);
 
          //cerr << "dup completed\n";
 
