@@ -83,6 +83,7 @@ int main(int argc, char *argv[])
          else if (pid == 0) { //If this is the greatgrandchild, aka ps - A
             //Write connection to pipe
             dup2(fd2[WR], WR);
+            close(fd2[RD]);
 
             //Do wc -l
             //TODO filename?
@@ -93,6 +94,8 @@ int main(int argc, char *argv[])
          else {   //If this is the grandchild, aka grep arg
             //wait for greatgrandchild
             wait(NULL);
+
+            close(fd2[WR]);
 
             //Read from pipe
             dup2(fd2[RD], RD);
@@ -121,6 +124,9 @@ int main(int argc, char *argv[])
          //Read from pipe
          dup2(fd[RD], RD);
 
+         close(fd[WR]);
+         close(fd2[RD]);
+
          cerr << "dup completed\n";
 
          //Do wc -l
@@ -132,6 +138,8 @@ int main(int argc, char *argv[])
    else {   //If this is the parent
       //Wait for child
       wait(NULL);
+
+      close(fd[RD]);
    }
    return 0;
 }
