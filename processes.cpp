@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
             dup2(fd2[WR], WR);
 
             //Close pipe fd we don't need anymore
-            close(fd2[RD]);
+            //close(fd2[RD]);
 
             //Do wc -l
             //cerr << "ps -A reached\n";
