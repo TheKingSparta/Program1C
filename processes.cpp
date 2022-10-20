@@ -104,10 +104,10 @@ int main(int argc, char *argv[])
             cerr << "grep reached\n";
             cerr << "argv[1]: " + (string) argv[1];
             cerr << "\n";
-            cerr << "cin: ";
-            std::string cont;
-            cin >> cont;
-            cerr << cont;
+            //cerr << "cin: ";
+            //std::string cont;
+            //cin >> cont;
+            //cerr << cont;
             execlp("grep", "grep", argv[1], (char *) NULL);
             cerr << "grep failed\n";
          }
