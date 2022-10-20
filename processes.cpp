@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
          }
          else {   //If this is the grandchild, aka grep arg
             //wait for greatgrandchild
-            wait(NULL);
+            while(wait(NULL) != pid);
 
             //Close pipe fd we don't need anymore
             close(fd2[WR]);
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
       else {   //If this is the child, aka wcl
          //wait for grandchild
          //cerr << "wc -l reached, waiting\n";
-         wait(NULL);
+         while(wait(NULL) != pid);
          //cerr << "wait completed\n";
 
          //Read from pipe
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
    }
    else {   //If this is the parent
       //Wait for child
-      wait(NULL);
+      while(wait(NULL) != pid);
 
       //Close pipe fd we don't need anymore
       close(fd[RD]);
