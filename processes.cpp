@@ -49,25 +49,71 @@ using namespace std;
  * closes a file descriptor.
  */
 
-int main()
+int main(int argc, char *argv[])
 {
+   if(argc <= 2) {
+      cerr << "Too few args!";
+      return(1);
+   }
    //Provided code
    enum {RD, WR}; // pipe fd index RD=0, WR=1
-   int n, fd[2];
+   int n, fd[2], fd2[2];  //n is used to store the num chars in a received message, fd is the file descriptors
    pid_t pid;
    char buf[100];
-   if( pipe(fd) < 0 ) // 1: pipe created
-      perror("pipe error");
-   else if ((pid = fork()) < 0) // 2: child forked
+
+   if ((pid = fork()) < 0) // If the child is not created
       perror("fork error");
-   else if (pid == 0) {
-      close(fd[WR]);// 4: child's fd[1] closed
-      n = read(fd[RD], buf, 100);
-      write(STDOUT_FILENO, buf, n);
+   else if (pid == 0) { //If this is the child, aka wc -l
+      //Create pipe to share with grandchild
+      if( pipe(fd) < 0 ) { // If the pipe fails to be created
+         perror("pipe error");
+      }
+      //Create grandchild,
+      if ((pid = fork()) < 0) // If the grandchild is not created
+         perror("fork error");
+      else if (pid == 0) { //If this is the grandchild, aka grep
+         //Create pipe to share with greatgrandchild
+         if( pipe(fd2) < 0 ) { // If the pipe fails to be created
+            perror("pipe error");
+         }
+         //Create greatgrandchild,
+         if ((pid = fork()) < 0) // If the grandchild is not created
+            perror("fork error");
+         else if (pid == 0) { //If this is the greatgrandchild, aka ps - A
+            //Write connection to pipe
+            dup2(fd2[WR], WR);
+
+            //Do wc -l
+            //TODO filename?
+            execlp("", "ps", "-A", NULL);
+         }
+         else {   //If this is the grandchild, aka grep arg
+            //wait for greatgrandchild
+            wait(NULL);
+
+            //Read from pipe
+            dup2(fd2[RD], RD);
+
+            //Write to the pipe
+            dup2(fd[WR], WR);
+
+            //Do grep argv[1]
+            execlp("", "grep", argv[1], NULL);
+         }
+      }
+      else {   //If this is the child, aka wcl
+         //wait for grandchild
+         wait(NULL);
+
+         //Read from pipe
+         dup2(fd[RD], RD);
+
+         //Do wc -l
+         execlp("", "wc", "-l", NULL);
+      }
    }
-   else {
-      close(fd[RD]); // 3: parent's fd[0] closed
-      write(fd[WR], "Hello my child\n", 15);
+   else {   //If this is the parent
+      //Wait for child
       wait(NULL);
    }
    return 0;
