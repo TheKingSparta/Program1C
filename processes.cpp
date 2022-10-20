@@ -83,11 +83,12 @@ int main(int argc, char *argv[])
          else if (pid == 0) { //If this is the greatgrandchild, aka ps - A
             //Write connection to pipe
             dup2(fd2[WR], WR);
+
+            //Close pipe fd we don't need anymore
             close(fd2[RD]);
 
             //Do wc -l
-            //TODO filename?
-            cerr << "ps -A reached\n";
+            //cerr << "ps -A reached\n";
             execlp("ps", "ps", "-A", (char *) NULL);
             cerr << "ps failed\n";
          }
@@ -95,6 +96,7 @@ int main(int argc, char *argv[])
             //wait for greatgrandchild
             wait(NULL);
 
+            //Close pipe fd we don't need anymore
             close(fd2[WR]);
 
             //Read from pipe
@@ -104,9 +106,9 @@ int main(int argc, char *argv[])
             dup2(fd[WR], WR);
 
             //Do grep argv[1]
-            cerr << "grep reached\n";
-            cerr << "argv[1]: " + (string) argv[1];
-            cerr << "\n";
+            //cerr << "grep reached\n";
+            //cerr << "argv[1]: " + (string) argv[1];
+            //cerr << "\n";
             //cerr << "cin: ";
             //std::string cont;
             //cin >> cont;
@@ -117,28 +119,30 @@ int main(int argc, char *argv[])
       }
       else {   //If this is the child, aka wcl
          //wait for grandchild
-         cerr << "wc -l reached, waiting\n";
+         //cerr << "wc -l reached, waiting\n";
          wait(NULL);
-         cerr << "wait completed\n";
+         //cerr << "wait completed\n";
 
          //Read from pipe
          dup2(fd[RD], RD);
 
+         //Close pipe fd we don't need anymore
          close(fd[WR]);
          close(fd2[RD]);
 
-         cerr << "dup completed\n";
+         //cerr << "dup completed\n";
 
          //Do wc -l
-         cerr << "wc -l reached\n";
+         //cerr << "wc -l reached\n";
          execlp("wc", "wc", "-l", (char *) NULL);
-         cerr << "wc failed\n";
+         //cerr << "wc failed\n";
       }
    }
    else {   //If this is the parent
       //Wait for child
       wait(NULL);
 
+      //Close pipe fd we don't need anymore
       close(fd[RD]);
    }
    return 0;
