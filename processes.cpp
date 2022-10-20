@@ -12,8 +12,8 @@
  */
 
 #include <iostream>
-//#include <stdio.h> // for printf
-//#include <stdlib.h> // for exit
+#include <stdio.h> // for printf
+#include <stdlib.h> // for exit
 #include <unistd.h>  //Includes fork() execlp()
 using namespace std;
 
