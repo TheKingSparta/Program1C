@@ -51,6 +51,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+   extern char **environ;
    if(argc < 2) {
       cerr << "Too few args!";
       return(1);
@@ -85,8 +86,9 @@ int main(int argc, char *argv[])
 
             //Do wc -l
             //TODO filename?
-            cerr << "ps -A reached";
+            cerr << "ps -A reached\n";
             execlp("", "ps", "-A", NULL);
+            cerr << "ps failed\n";
          }
          else {   //If this is the grandchild, aka grep arg
             //wait for greatgrandchild
@@ -99,8 +101,9 @@ int main(int argc, char *argv[])
             dup2(fd[WR], WR);
 
             //Do grep argv[1]
-            cerr << "grep reached";
-            execlp("", "grep", argv[1], NULL);
+            cerr << "grep reached\n";
+            execlp(environ, "grep", argv[1], NULL);
+            cerr << "grep failed\n";
          }
       }
       else {   //If this is the child, aka wcl
@@ -111,8 +114,9 @@ int main(int argc, char *argv[])
          dup2(fd[RD], RD);
 
          //Do wc -l
-         cerr << "wc -l reached";
+         cerr << "wc -l reached\n";
          execlp("", "wc", "-l", NULL);
+         cerr << "wc failed\n";
       }
    }
    else {   //If this is the parent
