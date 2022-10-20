@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
             //Do wc -l
             //TODO filename?
             cerr << "ps -A reached\n";
-            execlp("", "ps", "-A", NULL);
+            execlp("ps", "ps", "-A", NULL);
             cerr << "ps failed\n";
          }
          else {   //If this is the grandchild, aka grep arg
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 
             //Do grep argv[1]
             cerr << "grep reached\n";
-            execlp(environ, "grep", argv[1], NULL);
+            execlp("grep", "grep", argv[1], NULL);
             cerr << "grep failed\n";
          }
       }
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
 
          //Do wc -l
          cerr << "wc -l reached\n";
-         execlp("", "wc", "-l", NULL);
+         execlp("wc", "wc", "-l", NULL);
          cerr << "wc failed\n";
       }
    }
