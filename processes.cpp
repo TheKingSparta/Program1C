@@ -15,6 +15,8 @@
 #include <stdio.h> // for printf
 #include <stdlib.h> // for exit
 #include <unistd.h>  //Includes fork() execlp()
+#include <sys/types.h>
+#include <sys/wait.h>
 using namespace std;
 
 /*
