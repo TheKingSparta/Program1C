@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
             perror("pipe error");
          }
          //Create greatgrandchild,
-         if ((pid = fork()) < 0) // If the grandchild is not created
+         if ((pid = fork()) < 0) // If the greatgrandchild is not created
             perror("fork error");
          else if (pid == 0) { //If this is the greatgrandchild, aka ps - A
             //Write connection to pipe
@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
 
             //Do wc -l
             //TODO filename?
+            cerr << "ps -A reached";
             execlp("", "ps", "-A", NULL);
          }
          else {   //If this is the grandchild, aka grep arg
@@ -98,6 +99,7 @@ int main(int argc, char *argv[])
             dup2(fd[WR], WR);
 
             //Do grep argv[1]
+            cerr << "grep reached";
             execlp("", "grep", argv[1], NULL);
          }
       }
@@ -109,6 +111,7 @@ int main(int argc, char *argv[])
          dup2(fd[RD], RD);
 
          //Do wc -l
+         cerr << "wc -l reached";
          execlp("", "wc", "-l", NULL);
       }
    }
