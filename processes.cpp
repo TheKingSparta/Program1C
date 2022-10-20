@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
          //Do wc -l
          //cerr << "wc -l reached\n";
          execlp("wc", "wc", "-l", (char *) NULL);
-         //cerr << "wc failed\n";
+         cerr << "wc failed\n";
       }
    }
    else {   //If this is the parent
