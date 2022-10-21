@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
             dup2(fd2[WR], WR);
 
             //Do wc -l
-            //cerr << "ps -A reached\n";
+            cerr << "ps -A reached\n";
             execlp("ps", "ps", "-A", (char *) NULL);
             cerr << "ps failed\n";
          }
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
             dup2(fd[WR], WR);
 
             //Do grep argv[1]
-            //cerr << "grep reached\n";
+            cerr << "grep reached\n";
             //cerr << "argv[1]: " + (string) argv[1];
             //cerr << "\n";
             //cerr << "cin: ";
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
          //cerr << "dup completed\n";
 
          //Do wc -l
-         //cerr << "wc -l reached\n";
+         cerr << "wc -l reached\n";
          execlp("wc", "wc", "-l", (char *) NULL);
          cerr << "wc failed\n";
       }
