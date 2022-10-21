@@ -117,9 +117,9 @@ int main(int argc, char *argv[])
       }
       else {   //If this is the child, aka wcl
          //wait for grandchild
-         //cerr << "wc -l reached, waiting\n";
+         cerr << "wc -l reached, waiting\n";
          wait(NULL);
-         //cerr << "wait completed\n";
+         cerr << "wait completed\n";
 
          //Read from pipe
          dup2(fd[RD], RD);
