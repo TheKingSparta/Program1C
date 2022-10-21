@@ -94,14 +94,14 @@ int main(int argc, char *argv[])
             //wait for greatgrandchild
             wait(NULL);
 
+            //Write to the pipe
+            dup2(fd[WR], WR);
+
             //Read from pipe
             dup2(fd2[RD], RD);
 
             //Close pipe fd we don't need anymore
             close(fd2[WR]);
-
-            //Write to the pipe
-            dup2(fd[WR], WR);
 
             //Do grep argv[1]
             cerr << "grep reached\n";
