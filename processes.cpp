@@ -94,11 +94,11 @@ int main(int argc, char *argv[])
             //wait for greatgrandchild
             wait(NULL);
 
-            //Close pipe fd we don't need anymore
-            close(fd2[WR]);
-
             //Read from pipe
             dup2(fd2[RD], RD);
+
+            //Close pipe fd we don't need anymore
+            close(fd2[WR]);
 
             //Write to the pipe
             dup2(fd[WR], WR);
@@ -121,12 +121,11 @@ int main(int argc, char *argv[])
          wait(NULL);
          //cerr << "wait completed\n";
 
-         //Close pipe fd we don't need anymore
-         close(fd[WR]);
-         close(fd2[RD]);
-
          //Read from pipe
          dup2(fd[RD], RD);
+
+         //Close pipe fd we don't need anymore
+         close(fd[WR]);
 
          //cerr << "dup completed\n";
 
@@ -142,6 +141,7 @@ int main(int argc, char *argv[])
 
       //Close pipe fd we don't need anymore
       close(fd[RD]);
+      close(fd2[RD]);
    }
    return 0;
 }
