@@ -62,6 +62,12 @@ int main(int argc, char *argv[])
    pid_t pid;
    char buf[100];
 
+   if( pipe(fd) < 0 ) { // If the pipe fails to be created
+      perror("pipe error");
+   }
+   if( pipe(fd2) < 0 ) { // If the pipe fails to be created
+      perror("pipe error");
+   }
    if ((pid = fork()) < 0) // If the child is not created
       perror("fork error");
    else if (pid == 0) { //If this is the child, aka wc -l
@@ -71,9 +77,7 @@ int main(int argc, char *argv[])
          perror("fork error");
       else if (pid == 0) { //If this is the grandchild, aka grep
          //Create pipe to share with greatgrandchild
-         if( pipe(fd2) < 0 ) { // If the pipe fails to be created
-            perror("pipe error");
-         }
+
          //Create greatgrandchild,
          if ((pid = fork()) < 0) // If the greatgrandchild is not created
             perror("fork error");
